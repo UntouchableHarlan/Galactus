@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <%- include ('header') -%>
+    <link href="/css/brothers.css" rel="stylesheet">
+  </head>
+  <body style="padding-top:8%;background-color:white;">
+    <%- include ('navbar') -%>
+    <div class="container">
+      <!-- <h1>Click the filter icon <small>(<i class="glyphicon glyphicon-filter"></i>)</small></h1> -->
+    	<div class="row">
+  		</div>
+  		<div class="col-md-12">
+  			<div class="panel panel-success" style="border-color:gold;">
+  				<div class="panel-heading" style="color:#344050;">
+  					<h3 class="panel-title">Brothers</h3>
+  					<div class="pull-right">
+  						<span class="clickable filter" data-toggle="tooltip" title="Toggle table filter" data-container="body">
+  							<i class="glyphicon glyphicon-filter"></i>
+  						</span>
+  					</div>
+  				</div>
+  				<div class="panel-body">
+  					<input type="text" class="form-control" id="task-table-filter" data-action="filter" data-filters="#task-table" placeholder="Filter Brothers" />
+  				</div>
+  				<table class="table table-hover" id="task-table" style="text-align:center;">
+  					<thead>
+  						<tr>
+  							<th>#</th>
+  							<th>Name</th>
+  							<th>Email</th>
+  							<th>Missed Meetings</th>
+                <th>Dues</th>
+  						</tr>
+  					</thead>
+  					<tbody>
+              <% brothers.forEach((bro, index) => {  %>
+                <tr>
+    							<td><%= index + 1 %></td>
+    							<td><%= bro.name %></td>
+    							<td><%= bro.email %></td>
+    							<td>0</td>
+                  <td><button type="button" class="btn btn-sm btn-success">Paid</button></td>
+    						</tr>
+              <% }) %>
+  					</tbody>
+  				</table>
+  			</div>
+  		</div>
+  	</div>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/plugins.min.js"></script>
+    <script src="lib/stickyfilljs/stickyfill.min.js"></script>
+    <script src="lib/sticky-kit/sticky-kit.min.js"></script>
+    <script src="lib/is_js/is.min.js"></script>
+    <script src="js/theme.js"></script>
+  </body>
+</html>

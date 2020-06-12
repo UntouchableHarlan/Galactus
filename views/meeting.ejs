@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <%- include ('header') -%>
+    <link href="/css/brothers.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="container">
+      <%- include ('navbar') -%>
+      <br>
+      <div class="row">
+        <div class="col-sm mt-3 ml-2" style="">
+          <!-- <div class="card"> -->
+            <div class="circular" style="display:flex;">
+              <img src="img/new.jpeg" class="mx-auto circ img-fluid" />
+            </div>
+            <br>
+            <button type="button" data-toggle="modal" data-target="#createModal" class="btn btn-lg btn-success btn-block" style="width: 50%;margin-left: 25%;">
+              Create
+            </button>
+          <!-- </div> -->
+        </div>
+
+        <div class="col-sm mt-3 mr-2">
+          <!-- <div class="card"> -->
+            <div class="circular" style="display:flex;">
+              <img src="img/room.jpeg" class="mx-auto circ img-fluid" />
+            </div>
+            <br>
+            <a href="/meetings/all" id="past" class="btn btn-lg btn-primary btn-block" style="width: 50%;margin-left: 25%;">
+              View All
+            </a>
+          <!-- </div> -->
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="createModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">New Meeting</h5><button class="close" type="button" data-dismiss="modal" aria-label="Close"><span class="font-weight-light" aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body">
+            <form action="/newmeeting" id="meeting-new" method="post">
+              <div class="form-group">
+                <label for="time">Meeting Type</label>
+                <select name="type" class="custom-select custom-select mb-3" required>
+                  <option selected="" value="Chapter">Chapter</option>
+                  <option value="E-Board">E-Board</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="time">Start Time</label>
+                <input class="form-control" type="time" id="appt" name="appt">
+              </div>
+              <div class="form-group">
+                <label for="time">Password</label>
+                <input class="form-control" name="password" type="password" placeholder="Password" required>
+              </div>
+              <div class="form-group" style="display:flex;justify-content:center;">
+                <button class="btn btn-primary btn-block mt-3" style="width:50%" type="submit" name="submit">Create</button>
+              </div>
+            </form>
+          </div>
+      </div>
+    </div>
+
+  <script src="js/jquery.min.js"></script>
+  <script src="js/popper.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/plugins.min.js"></script>
+  <script src="lib/stickyfilljs/stickyfill.min.js"></script>
+  <script src="lib/sticky-kit/sticky-kit.min.js"></script>
+  <script src="lib/is_js/is.min.js"></script>
+  <script src="js/theme.js"></script>
+  </body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <%- include ('header') -%>
+    <link rel="stylesheet" src="/css/all.min.css">
+  </head>
+  <body style="padding-top:56px">
+    <%- include ('navbar') -%>
+    <div class="container" style="padding-top: 5%;">
+      <div class="alert alert-danger" style="text-align:center" role="alert" hidden></div>
+      <div class="alert alert-success" style="text-align:center" role="alert" hidden></div>
+      <span id="loader" class="align-middle" style="margin:auto;display:flex;justify-content:center;"><i class="fas fa-circle-notch fa-spin" style="font-size: 3rem;"></i></span>
+      <br>
+      <br>
+      <div class="col-md-12 signin" style="display:flex;justify-content:center;">
+        <div class="col-md-4">
+          <select id="brother" class="custom-select mb-3">
+            <% brothers.forEach((bro) => { %>
+              <option value="<%= bro.id %>"><%= bro.name %></option>
+            <% }) %>
+          </select>
+        </div>
+      </div>
+      <br>
+    </div>
+    <div class="col-sm-12 signin" style="display:flex;justify-content:center;">
+      <button type="button" id="signIn" class="btn btn-primary" name="end">Sign In</button>
+    </div>
+
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/plugins.min.js"></script>
+    <script src="/lib/stickyfilljs/stickyfill.min.js"></script>
+    <script src="/lib/sticky-kit/sticky-kit.min.js"></script>
+    <script src="/lib/is_js/is.min.js"></script>
+    <script src="/js/theme.js"></script>
+    <script src="/js/index.js"></script>
+    <script src="/js/meeting.js"></script>
+  </body>
+</html>

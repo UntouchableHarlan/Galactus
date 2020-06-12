@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <%- include ('header') -%>
+  </head>
+  <body style="padding-top:56px">
+    <%- include ('navbar') -%>
+    <div class="container">
+      <!-- Jumbotron Header -->
+      <header class="jumbotron my-4 text-center" style="background-color: gold;">
+        <h1 class="display-3">Welcome to Galactus</h1>
+        <p class="lead">This is a tool to help organize the duties of being secretary. You can create meetings and easily keep track of attendance.</p>
+      </header>      
+
+      <!-- Page Features -->
+      <div class="row text-center">
+        <div class="col-md-6 col-md-6 mb-4">
+          <div class="card h-100">
+            <!-- <img class="img-fluid" src="img/bros.jpg" alt=""> -->
+            <div class="card-body">
+              <h4 class="card-title">Brothers</h4>
+              <p class="card-text">
+                Get information on Brothers active in chapter. See complete list of all brothers as well as attendance info on each one.
+              </p>
+            </div>
+            <div class="card-footer">
+              <a href="/brothers" class="btn btn-primary">Brothers</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-md-6 mb-4">
+          <div class="card h-100">
+            <!-- <img class="img-fluid" src="img/123.jpeg" alt=""> -->
+            <div class="card-body">
+              <h4 class="card-title">Meetings</h4>
+              <p class="card-text">
+                Create new meetings and view previous meetings. Meetings will have attendance and minutes information.
+              </p>
+            </div>
+            <div class="card-footer">
+              <a href="/meetings" class="btn btn-primary">Meetings</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <!-- /.row -->
+
+    </div>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/plugins.min.js"></script>
+    <script src="lib/stickyfilljs/stickyfill.min.js"></script>
+    <script src="lib/sticky-kit/sticky-kit.min.js"></script>
+    <script src="lib/is_js/is.min.js"></script>
+    <script src="js/theme.js"></script>
+    <script src="js/index.js"></script>
+  </body>
+</html>

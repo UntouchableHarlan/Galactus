@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <%- include ('header') -%>
+  </head>
+  <body style="padding-top:56px">
+    <%- include ('navbar') -%>
+    <div class="container" style="padding-top: 5%;">
+      <div class="col-md-12" style="display:flex;justify-content: center;">
+        <div class="col-md-6" style="display:flex;justify-content:center;" id="picture">
+          <img src="<%= url %>" style="width:100%;">
+        </div>
+      </div>
+      <br>
+      <div class="col-md-12" style="display:flex;justify-content: center;">
+        <div class="col-md-6">
+          <ul class="list-group" id="rob" style="text-align: center;">
+            <!-- <li class="list-group-item" id="picture"></li> -->
+            <li class="list-group-item" style="display:flex;justify-content:center;">
+              <div class="col-md-6" style="padding-left:3%;">
+                <label>Set Meeting Time</label>
+                <br>
+                <strong><%= meeting.time.toDate().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) %></strong>
+              </div>
+            </li>
+            <li class="list-group-item" style="display:flex;justify-content:center;">
+              <div class="col-md-6" style="padding-left: 3%;">
+                <label>Actual Start Time</label>
+                <br>
+                <strong id="start"><%= meeting.startTime ? meeting.startTime.toDate().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : "" %></strong>
+              </div>
+            </li>
+            <li class="list-group-item" style="display:flex;justify-content:center;">
+              <div class="col-md-6" style="padding-left: 3%;">
+                <label>End Time</label>
+                <br>
+                <strong id="end"><%= meeting.endTime ? meeting.endTime.toDate().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : "" %></strong>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <br>
+      <% if (meeting.endTime) { %>
+        <a href="/" class="btn btn-primary" style="display:flex;justify-content:center;">View Details</a>
+      <% } else if (meeting.startTime) { %>
+        <div class="col-md-12" style="display:flex;justify-content:center;">
+          <button class="btn btn-danger" type="button" name="button" id="endMeeting">End Meeting</button>
+        </div>
+      <% } else { %>
+        <div class="col-md-12" style="display:flex;justify-content:center;">
+          <button class="btn btn-primary" type="button" name="button" id="startMeeting">Start Meeting</button>
+        </div>
+      <% } %>
+    </div>
+    <br>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/plugins.min.js"></script>
+    <script src="lib/stickyfilljs/stickyfill.min.js"></script>
+    <script src="lib/sticky-kit/sticky-kit.min.js"></script>
+    <script src="lib/is_js/is.min.js"></script>
+    <script src="js/theme.js"></script>
+    <script src="js/index.js"></script>
+  </body>
+</html>
