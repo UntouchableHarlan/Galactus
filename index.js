@@ -222,7 +222,7 @@ app.post('/:id/signin', async function(req, res, next) {
 
 app.get('/:id', mid.isAuth, async function(req, res, next) {
   try {
-    var qrData = `localhost:3000/${req.params.id}/signin`
+    var qrData = `https://akpsi-galactus.herokuapp.com/${req.params.id}/signin`
     var meetingRef = db.collection("Meetings").doc(req.params.id);
     let meetingSnap = await meetingRef.get();
     let meeting = meetingSnap.data();
