@@ -23,6 +23,15 @@ app.get('/login', function(req, res, next) {
   });
 });
 
+app.get('/logout', async function(req, res, next) {
+  try {
+    await firebase.auth().signOut();
+    res.redirect('/');
+  } catch (e) {
+    res.redirect('/');
+  }
+});
+
 app.post('/login', async function(req, res, next) {
   console.log(req.body);
   try {
@@ -200,12 +209,12 @@ app.post('/:id/signin', async function(req, res, next) {
       now.setDate(now.getDate());
       if ((meetingDoc.startTime - now) < ftmin) {
         meetingRef.update({
-          late: firebase.firestore.FieldValue.arrayUnion(broId)
+          late: broDoc
         });
       }
     }
     meetingRef.update({
-      attended: firebase.firestore.FieldValue.arrayUnion(broId)
+      attended: broDoc
     });
     res.json({
       message: "Successfully signed in",
