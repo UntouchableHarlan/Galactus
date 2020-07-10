@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <%- include ('header') -%>
+    <link rel="stylesheet" src="/css/all.min.css">
+  </head>
+  <body style="padding-top:56px">
+    <%- include ('navbar') -%>
+    <div class="container" style="padding-top: 5%;">
+
+      <div class="col-md-12" style="display:flex;justify-content: center;">
+        <div class="col-md-6" id="picture">
+
+        </div>
+      </div>
+      <div class="col-md-12" style="display:flex;justify-content: center;">
+        <div class="col-md-6">
+          <ul class="list-group" id="rob" style="text-align: center;">
+            <!-- <li class="list-group-item" id="picture"></li> -->
+            <li class="list-group-item" style="display:flex;">
+              <div class="col-md-6 pin">
+                <i class="fas fa-clock" style="font-size: 4em; color: goldenrod;"></i>
+              </div>
+              <div class="col-md-6" style="padding-left: 3%;">
+                <label>Start Time</label>
+                <br>
+                <strong><%= meeting.startTime ? `${meeting.startTime.toDate().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}` : `Not Started Yet` %></strong>
+              </div>
+            </li>
+            <li class="list-group-item" style="display: flex">
+              <div class="col-md-6 pin">
+                <i class="fas fa-clock" style="font-size: 3em; color: #357edd;"></i>
+              </div>
+              <div class="col-md-6" style="padding-left: 3%;">
+                <label>End Time</label>
+                <br>
+                <strong><%= meeting.endTime ? `${meeting.endTime.toDate().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}` : `Not Ended Yet` %></strong>
+              </div>
+            </li>
+            <li class="list-group-item" style="display: flex">
+              <div class="col-md-6 pin">
+                <i class="fa fa-users" style="font-size: 3em; color: coral;"></i>
+              </div>
+              <div class="col-md-6" style="padding-left: 3%;">
+                <label>Tardy</label>
+                <br>
+                <strong> <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#tardyModal">View List</button> </strong>
+              </div>
+            </li>
+            <li class="list-group-item" style="display: flex">
+              <div class="col-md-6 pin">
+                <i class="fa fa-users" style="font-size: 3em; color: darkseagreen;"></i>
+              </div>
+              <div class="col-md-6" style="padding-left: 3%;">
+                <label>Absent</label>
+                <br>
+                <strong> <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#absentModal">View List</button> </strong>
+              </div>
+            </li>
+            <li class="list-group-item" style="display: flex">
+              <div class="col-md-6 pin">
+                <i class="fa fa-sticky-note" style="font-size: 3em; color: darkseagreen;"></i>
+              </div>
+              <div class="col-md-6" style="padding-left: 3%;">
+                <label>Notes</label>
+                <br>
+                <strong><%=  %></strong>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Tardy Modal-->
+    <div class="modal fade" id="tardyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Tardy</h5><button class="close" type="button" data-dismiss="modal" aria-label="Close"><span class="font-weight-light" aria-hidden="true">&times;</span></button>
+          </div>
+          <% if (meeting.late) { %>
+            <% meeting.late.forEach((bro, i) => { %>
+              <p class="mt-3" style="text-align:center"><%= bro.name %></p>
+            <% }) %>
+          <% } %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Absent Modal-->
+    <div class="modal fade" id="absentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Absent</h5><button class="close" type="button" data-dismiss="modal" aria-label="Close"><span class="font-weight-light" aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body">
+            <% if (meeting.late) { %>
+              <% meeting.late.forEach((bro, i) => { %>
+                <p class="mt-3" style="text-align:center"><%= bro.name %></p>
+              <% }) %>
+            <% } %>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/plugins.min.js"></script>
+    <script src="/lib/stickyfilljs/stickyfill.min.js"></script>
+    <script src="/lib/sticky-kit/sticky-kit.min.js"></script>
+    <script src="/lib/is_js/is.min.js"></script>
+    <script src="/js/theme.js"></script>
+    <script src="/js/index.js"></script>
+    <script src="/js/meeting.js"></script>
+  </body>
+</html>

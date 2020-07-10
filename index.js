@@ -61,7 +61,7 @@ app.get('/', mid.isAuth, function(req, res, next) {
 // ==============================================================
 app.get('/brothers', mid.isAuth, async function(req, res, next) {
   try {
-    let docRef = db.collection('Brothers').orderBy('name', 'desc');
+    let docRef = db.collection('Brothers').orderBy('name', 'asc');
     let docQuery = await docRef.get();
     let brotherDocs = docQuery.docs;
 
@@ -79,8 +79,12 @@ app.get('/brothers', mid.isAuth, async function(req, res, next) {
 });
 
 app.get('/brothers/:id', mid.isAuth, async function(req, res, next) {
-  let docRef = db.collection('Brothers').doc(req.params.id);
-  res.render("brotherDetail");
+  let broRef = db.collection('Brothers').doc(req.params.id);
+  let docSnapshot = await broRef.get();
+  let data = docSnapshot.data();
+  res.render("brotherDetail", {
+    brother: data
+  });
 });
 
 // ==============================================================
@@ -185,8 +189,8 @@ app.post('/:id/endmeeting', async function(req, res, next) {
 
     let meetingSnap = await meetingRef.get();
     let meetingDoc = meetingSnap.data();
-
-    res.json(date);
+    await helper.closeMeeting(meetingRef, meetingDoc.attended);
+    res.redirect(`/${req.params.id}/statistics`)
   } catch (e) {
     res.json(e);
   }
@@ -207,14 +211,18 @@ app.post('/:id/signin', async function(req, res, next) {
       var now = new Date();
       var ftmin = 15 * 60 * 1000;
       now.setDate(now.getDate());
-      if ((meetingDoc.startTime - now) < ftmin) {
+
+      if ((meetingDoc.startTime.toDate() - now) < ftmin) {
         meetingRef.update({
-          late: broDoc
+          late: firebase.firestore.FieldValue.arrayUnion(broDoc)
+        });
+        broRef.update({
+          tardy: firebase.firestore.FieldValue.arrayUnion(meetingDoc)
         });
       }
     }
     meetingRef.update({
-      attended: broDoc
+      attended: firebase.firestore.FieldValue.arrayUnion(broDoc)
     });
     res.json({
       message: "Successfully signed in",
@@ -239,6 +247,20 @@ app.get('/:id', mid.isAuth, async function(req, res, next) {
 
     res.render("meetingdetail", {
       url: url,
+      meeting: meeting,
+    });
+  } catch (e) {
+
+  }
+});
+
+app.get('/:id/statistics', mid.isAuth, async function(req, res, next) {
+  try {
+    var meetingRef = db.collection("Meetings").doc(req.params.id);
+    let meetingSnap = await meetingRef.get();
+    let meeting = meetingSnap.data();
+
+    res.render("meetingstatistics", {
       meeting: meeting,
     });
   } catch (e) {

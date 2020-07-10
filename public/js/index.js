@@ -7,7 +7,10 @@ $( document ).ready(function() {
       dataType: 'json',
       url: `/${window.location.href.split("/")[3]}/startmeeting`,
       success: function(res) {
-        $("#start")[0].innerText = res.responseJSON.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
+        console.log(res);
+        let date = new Date(res.toString());
+        $("#start")[0].innerText = date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
+        $("#buu").html("<button class=\"btn btn-danger\" type=\"button\" name=\"button\" id=\"endMeeting\">End Meeting</button>");
       }
     })
   });
@@ -20,11 +23,10 @@ $( document ).ready(function() {
       url: `/${window.location.href.split("/")[3]}/endmeeting`,
       complete: function(res) {
         console.log(res);
-        let mSeconds = Date.parse(res.responseJSON);
-        let date = new Date(mSeconds);
-        console.log(date);
+        let date = new Date(res.toString());
         $("#end")[0].innerText = date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
+        $("#buu").html("<a href=\"/\" class=\"btn btn-primary\" style=\"display:flex;justify-content:center;\">View Details</a>");
       }
-    })
+    });
   });
 });

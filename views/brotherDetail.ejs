@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <%- include ('header') -%>
+    <link rel="stylesheet" src="/css/all.min.css">
+  </head>
+  <body style="padding-top:56px">
+    <%- include ('navbar') -%>
+    <div class="container" style="padding-top: 5%;">
+
+      <div class="col-md-12" style="display:flex;justify-content: center;">
+        <div class="col-md-6" id="picture">
+
+        </div>
+      </div>
+      <div class="col-md-12" style="display:flex;justify-content: center;">
+        <div class="col-md-8">
+          <ul class="list-group" id="rob" style="text-align: center;">
+            <!-- <li class="list-group-item" id="picture"></li> -->
+            <li class="list-group-item" style="display:flex;">
+              <div class="col-md-6 pin">
+                <i class="fa fa-user" style="font-size: 4em; color: goldenrod;"></i>
+              </div>
+              <div class="col-md-6" style="padding-left: 3%;">
+                <label>Name</label>
+                <br>
+                <%= brother.name %>
+              </div>
+            </li>
+            <li class="list-group-item" style="display: flex">
+              <div class="col-md-6 pin">
+                <i class="fa fa-envelope" style="font-size: 3em; color: #357edd;"></i>
+              </div>
+              <div class="col-md-6" style="padding-left: 3%;">
+                <label>Email</label>
+                <br>
+                <%= brother.email %>
+              </div>
+            </li>
+            <li class="list-group-item" style="display: flex">
+              <div class="col-md-6 pin">
+                <i class="fas fa-clock" style="font-size: 3em; color: #357edd;"></i>
+              </div>
+              <div class="col-md-6" style="padding-left: 3%;">
+                <label>Major</label>
+                <br>
+                <%= brother.major %>
+              </div>
+            </li>
+            <li class="list-group-item" style="display: flex">
+              <div class="col-md-6 pin">
+                <i class="fa fa-graduation-cap" style="font-size: 3em; color: darkseagreen;"></i>
+              </div>
+              <div class="col-md-6" style="padding-left: 3%;">
+                <label>Grad Year</label>
+                <br>
+                <%= brother.graduationYear %>
+              </div>
+            </li>
+            <li class="list-group-item" style="display: flex">
+              <div class="col-md-6 pin">
+                <i class="fa fa-money" style="font-size: 3em; color: darkseagreen;"></i>
+              </div>
+              <div class="col-md-6" style="padding-left: 3%;">
+                <label>Fines</label>
+                <br>
+                $<%= brother.finesDue %>
+              </div>
+            </li>
+            <li class="list-group-item" style="display: flex">
+              <div class="col-md-6 pin">
+                <i class="fa fa-users" style="font-size: 3em; color: coral;"></i>
+              </div>
+              <div class="col-md-6" style="padding-left: 3%;">
+                <label>Tardy</label>
+                <br>
+                <strong> <button class="btn btn-primary" type="button" name="button">View List</button> </strong>
+              </div>
+            </li>
+            <li class="list-group-item" style="display: flex">
+              <div class="col-md-6 pin">
+                <i class="fa fa-users" style="font-size: 3em; color: darkseagreen;"></i>
+              </div>
+              <div class="col-md-6" style="padding-left: 3%;">
+                <label>Absent</label>
+                <br>
+                <strong> <button class="btn btn-primary" type="button" name="button">View List</button> </strong>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <br>
+      <div class="col-md-12" id="fine" style="display:flex;justify-content:center;">
+        <button class="btn btn-primary" type="button" name="button">Add Fine</button>
+      </div>
+    </div>
+
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/plugins.min.js"></script>
+    <script src="/lib/stickyfilljs/stickyfill.min.js"></script>
+    <script src="/lib/sticky-kit/sticky-kit.min.js"></script>
+    <script src="/lib/is_js/is.min.js"></script>
+    <script src="/js/theme.js"></script>
+    <script src="/js/index.js"></script>
+    <script src="/js/meeting.js"></script>
+  </body>
+</html>
