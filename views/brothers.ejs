@@ -8,7 +8,16 @@
     <%- include ('navbar') -%>
     <div class="container">
       <!-- <h1>Click the filter icon <small>(<i class="glyphicon glyphicon-filter"></i>)</small></h1> -->
-    	<div class="row">
+    	<div class="row" style="display:flex;justify-content:flex-end;">
+        <div class="col-md-4">
+          <select class="custom-select mb-3" id="brotherFilter">
+            <option selected="">Filter By</option>
+            <option value="absent">Missed Meetings</option>
+            <option value="tardy">Late Meetings</option>
+            <option value="finesDue">Fines</option>
+            <option value="duesPaid">Dues not paid</option>
+          </select>
+        </div>
   		</div>
   		<div class="col-md-12">
   			<div class="panel panel-success" style="border-color:gold;">
@@ -35,15 +44,17 @@
                 <th>Info</th>
   						</tr>
   					</thead>
-  					<tbody>
+  					<tbody id="data">
               <% brothers.forEach((bro, index) => {  %>
-                <tr>
+                <tr id="<%= bro.id %>">
     							<td><%= index + 1 %></td>
     							<td><%= bro.name %></td>
     							<td><%= bro.email %></td>
     							<td><%= bro.tardy ? bro.tardy.length : "0" %></td>
                   <td>$<%= bro.finesDue %></td>
-                  <td><button type="button" data-toggle="modal" data-target="#exampleModal" class="btn btn-sm btn-<%= bro.duesPaid ? 'success' : 'danger' %>"><%= bro.duesPaid ? "Paid" : "Not Paid" %></button></td>
+                  <td>
+                    <span class="badge badge-<%= bro.duesPaid ? 'success' : 'danger' %>"><%= bro.duesPaid ? "Paid" : "Not Paid" %></span>                    
+                  </td>
                   <td> <a class="btn btn-primary btn-sm" href="/brothers/<%= bro.id %>">View Info</a> </td>
     						</tr>
               <% }) %>
@@ -52,26 +63,6 @@
   			</div>
   		</div>
   	</div>
-
-    <!-- modal ----------------------------------------------->
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">
-              Dues Paid?
-            </h5>
-            <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span class="font-weight-light" aria-hidden="true">&times;</span></button>
-          </div>
-          <div class="modal-body">
-            <p>By pressing Yes, you are confirming that <%# bro.name %> has paid their dues in full.</p>
-          </div>
-          <div class="modal-footer">
-            <button class="btn btn-danger btn-sm" type="button" data-dismiss="modal">Cancel</button>
-            <button class="btn btn-primary btn-sm" type="button">Yes</button></div>
-        </div>
-      </div>
-    </div>
     <script src="js/jquery.min.js"></script>
     <script src="js/popper.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
@@ -80,5 +71,6 @@
     <script src="lib/sticky-kit/sticky-kit.min.js"></script>
     <script src="lib/is_js/is.min.js"></script>
     <script src="js/theme.js"></script>
+    <script src="js/brother.js"></script>
   </body>
 </html>

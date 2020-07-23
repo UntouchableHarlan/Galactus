@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <%- include ('header') -%>
+    <link href="/css/brothers.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="container">
+      <%- include ('navbar') -%>
+      <br>
+      <div class="content">
+        <div class="row no-gutters">
+          <div class="col-lg-8 pr-lg-2">
+            <div class="card">
+              <div class="card-header">
+                <h5 class="mb-0">Settings</h5>
+              </div>
+              <div class="card-body bg-light">
+                <h5 class="fs-0">Add Brother</h5>
+                <p class="fs--1">Use this to add someone to the database</p>
+                <a class="btn btn-falcon-primary d-block" href="#!">Add</a>
+                <hr class="border border-dashed my-4">
+                <h5 class="fs-0">Import Brothers</h5>
+                <p class="fs--1">Enter a .csv file that contains all neccessary headers to get brothers information from.</p>
+                <a class="btn btn-falcon-default d-block" href="#!">Deactivate Account</a>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 pl-lg-2">
+            <div class="card mb-3 overflow-hidden">
+              <div class="card-header">
+                <h5 class="mb-0">Danger Zone</h5>
+              </div>
+              <div class="card-body bg-light">
+                <h5 class="fs-0">Remove All Brothers</h5>
+                <p class="fs--1"></p>
+                <a class="btn btn-falcon-warning d-block" href="#!">Remove All</a>
+                <hr class="border border-dashed my-4">
+                <h5 class="fs-0">Reset all information</h5>
+                <p class="fs--1">Use this if it is a new semester and you want to begin fresh with all meetings, fines, paid dues, etc.. This will remove all information and reset back to dafault.</p>
+                <a class="btn btn-falcon-danger d-block" href="#!">Reset</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/plugins.min.js"></script>
+    <script src="lib/stickyfilljs/stickyfill.min.js"></script>
+    <script src="lib/sticky-kit/sticky-kit.min.js"></script>
+    <script src="lib/is_js/is.min.js"></script>
+    <script src="js/theme.js"></script>
+  </body>
+</html>

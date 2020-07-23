@@ -55,6 +55,17 @@ app.get('/', mid.isAuth, function(req, res, next) {
   res.render("index");
 });
 
+// ==============================================================
+//                        Settings
+// ==============================================================
+app.get('/settings', mid.isAuth, async function(req, res, next) {
+  try {
+    res.render("settings");
+  } catch (e) {
+    console.log();
+  }
+});
+
 
 // ==============================================================
 //                            BROTHERS
@@ -86,6 +97,73 @@ app.get('/brothers/:id', mid.isAuth, async function(req, res, next) {
     brother: data
   });
 });
+
+app.post('/brothers/filter', mid.isAuth, async function(req, res, next) {
+  var option = req.body.by;
+  let broRef = db.collection('Brothers');
+  console.log(option);
+  switch (option) {
+    case "absent":
+      broRef = broRef.orderBy(option, "desc");
+      break;
+    case "tardy":
+      broRef = broRef.orderBy(option, "desc");
+      break;
+    case "finesDue":
+      broRef = broRef.orderBy(option, "desc");
+      break;
+    case "duesPaid":
+      broRef = broRef.where(option, "==", false);
+      break;
+    default:
+
+  }
+
+  var brothers = [];
+  let docSnapshot = await broRef.get();
+  let data = docSnapshot.docs;
+  docSnapshot.forEach((snapshot) => {
+    brothers.push(snapshot.data());
+  });
+  res.json({
+    brothers: brothers
+  });
+});
+
+app.post('/paid/:id', async function(req, res, next) {
+  try {
+    let broRef = db.collection('Brothers').doc(req.params.id);
+    let docSnapshot = await broRef.get();
+    let data = docSnapshot.data();
+    let paidBoolean = data.duesPaid
+    await broRef.update({
+      duesPaid: !paidBoolean
+    })
+    console.log("Document successfully updated!");
+    res.redirect(`/brothers/${req.params.id}`);
+  } catch (error) {
+    // The document probably doesn't exist.
+    console.error("Error updating document: ", error);
+  }
+
+})
+
+app.post('/updatedues/:id', async function(req, res, next) {
+  try {
+    let broRef = db.collection('Brothers').doc(req.params.id);
+    let amount = req.body.amount;
+
+    await broRef.update({
+      finesDue: amount
+    })
+    console.log("Document successfully updated!");
+    res.redirect(`/brothers/${req.params.id}`);
+  } catch (error) {
+    // The document probably doesn't exist.
+    console.error("Error updating document: ", error);
+  }
+
+})
 
 // ==============================================================
 //                        MEETINGS
@@ -264,7 +342,7 @@ app.get('/:id/statistics', mid.isAuth, async function(req, res, next) {
       meeting: meeting,
     });
   } catch (e) {
-
+    console.log();
   }
 });
 
