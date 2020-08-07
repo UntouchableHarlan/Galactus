@@ -11,11 +11,15 @@ firebase.initializeApp({
   projectId: "akpsi-attendance"
 });
 const db = firebase.firestore();
+const brothers = require('./routes/brothers')
+const meetings = require('./routes/meetings')
 // app.use(expressSession({secret: 'your secret', saveUninitialized: true, resave: false}));
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use('/meetings', meetings);
+app.use('/brothers', brothers);
 
 app.get('/login', function(req, res, next) {
   res.render('login', {
@@ -60,74 +64,101 @@ app.get('/', mid.isAuth, function(req, res, next) {
 // ==============================================================
 app.get('/settings', mid.isAuth, async function(req, res, next) {
   try {
-    res.render("settings");
+    res.render("settings", {
+      error: "none"
+    });
   } catch (e) {
     console.log();
   }
 });
 
+app.post('/resetinfo', mid.isAuth, async function(req, res, next) {
 
-// ==============================================================
-//                            BROTHERS
-// ==============================================================
-app.get('/brothers', mid.isAuth, async function(req, res, next) {
   try {
-    let docRef = db.collection('Brothers').orderBy('name', 'asc');
-    let docQuery = await docRef.get();
+    // remove all meetings
+    let meetingRef = db.collection("Meetings");
+    let meetQuery = await meetingRef.get();
+    let meetingDocs = meetQuery.docs;
+
+    meetingDocs.forEach((docSnapshot) => {
+      let meetingId = docSnapshot.id;
+      meetingRef.doc(meetingId).delete();
+    });
+
+    // reset brothers dues, absents and tardies
+    let broRef = db.collection("Brothers");
+    let docQuery = await broRef.get();
     let brotherDocs = docQuery.docs;
 
-    var brothers = [];
-
     brotherDocs.forEach((docSnapshot) => {
-      brothers.push(docSnapshot.data());
+      let broId = docSnapshot.data().id;
+      let data = {
+        duesPaid: false,
+        finesDue: 0,
+        absent: [],
+        tardy: []
+      }
+      broRef.doc(broId).update(data);
     });
-    res.render("brothers", {
-      brothers: brothers
-    })
+    res.render('settings', {
+      error: `Successfully resetted all info.`
+    });
   } catch (e) {
     console.log(e);
+    res.render('settings', {
+      error: `An error occured, please try again.`
+    });
   }
 });
 
-app.get('/brothers/:id', mid.isAuth, async function(req, res, next) {
-  let broRef = db.collection('Brothers').doc(req.params.id);
-  let docSnapshot = await broRef.get();
-  let data = docSnapshot.data();
-  res.render("brotherDetail", {
-    brother: data
-  });
+app.post('/addbro', mid.isAuth, async function(req, res, next) {
+  try {
+    let broRef = db.collection("Brothers").doc();
+    let data = {
+      name: req.body.name,
+      email: req.body.email,
+      phone: req.body.email,
+      duesPaid: false,
+      finesDue: 0,
+      graduationYear: req.body.graduationYear,
+      major: req.body.major,
+      absent: [],
+      tardy: [],
+      classification: req.body.classification,
+      id: broRef.id
+    }
+    await broRef.set(data);
+
+    res.render('settings', {
+      error: `Successfully added ${data.name}`
+    });
+  } catch (e) {
+    console.log(e);
+    res.render('settings', {
+      error: `An error occured, please try again.`
+    });
+  }
 });
 
-app.post('/brothers/filter', mid.isAuth, async function(req, res, next) {
-  var option = req.body.by;
-  let broRef = db.collection('Brothers');
-  console.log(option);
-  switch (option) {
-    case "absent":
-      broRef = broRef.orderBy(option, "desc");
-      break;
-    case "tardy":
-      broRef = broRef.orderBy(option, "desc");
-      break;
-    case "finesDue":
-      broRef = broRef.orderBy(option, "desc");
-      break;
-    case "duesPaid":
-      broRef = broRef.where(option, "==", false);
-      break;
-    default:
+app.post('/removeall', mid.isAuth, async function(req, res, next) {
+  try {
+    let broRef = db.collection("Brothers");
+    let docQuery = await broRef.get();
+    let brotherDocs = docQuery.docs;
 
+    brotherDocs.forEach((docSnapshot) => {
+      let broId = docSnapshot.data().id;
+      broRef.doc(broId).delete();
+    });
+
+    res.render('settings', {
+      error: `Successfully deleted all brothers.`
+    });
+  } catch (e) {
+    res.render('settings', {
+      error: `An error occured, please try again.`
+    });
   }
-
-  var brothers = [];
-  let docSnapshot = await broRef.get();
-  let data = docSnapshot.docs;
-  docSnapshot.forEach((snapshot) => {
-    brothers.push(snapshot.data());
-  });
-  res.json({
-    brothers: brothers
-  });
 });
 
 app.post('/paid/:id', async function(req, res, next) {
@@ -163,36 +194,6 @@ app.post('/updatedues/:id', async function(req, res, next) {
     console.error("Error updating document: ", error);
   }
 
-})
-
-// ==============================================================
-//                        MEETINGS
-// ==============================================================
-app.get('/meetings/all', mid.isAuth, async function(req, res, next) {
-  try {
-    let meetingRef = db.collection("Meetings");
-    let meetQuery = await meetingRef.get();
-    let meetDocs = meetQuery.docs;
-
-    var meetings = []
-
-    meetDocs.forEach((meet) => {
-      meetings.push(meet.data())
-    });
-
-    res.render("allmeetings", {
-      meetings: meetings
-    });
-  } catch (e) {
-    console.log(`Error: ${e}`);
-    res.render("allmeetings", {
-      meetings: []
-    });
-  }
-});
-
-app.get('/meetings', mid.isAuth, async function(req, res, next) {
-  res.render("meeting");
 });
 
 app.post('/newmeeting', mid.isAuth, async function(req, res, next) {
@@ -290,7 +291,14 @@ app.post('/:id/signin', async function(req, res, next) {
       var ftmin = 15 * 60 * 1000;
       now.setDate(now.getDate());
 
-      if ((meetingDoc.startTime.toDate() - now) < ftmin) {
+      //
+      console.log(helper.lessThanFTMinAgo(meetingDoc.startTime.toDate()));
+      if (helper.lessThanFTMinAgo(meetingDoc.startTime.toDate())) {
+        let lateDoc = {
+          brother: broDoc,
+          timeSignedIn: firebase.firestore.FieldValue.serverTimestamp()
+        }
+        console.log(lateDoc);
         meetingRef.update({
           late: firebase.firestore.FieldValue.arrayUnion(broDoc)
         });

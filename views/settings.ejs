@@ -9,6 +9,9 @@
       <%- include ('navbar') -%>
       <br>
       <div class="content">
+        <% if (error != "none") { %>
+          <div class="alert alert-danger" role="alert"><%= error %></div>
+        <% } %>
         <div class="row no-gutters">
           <div class="col-lg-8 pr-lg-2">
             <div class="card">
@@ -18,11 +21,11 @@
               <div class="card-body bg-light">
                 <h5 class="fs-0">Add Brother</h5>
                 <p class="fs--1">Use this to add someone to the database</p>
-                <a class="btn btn-falcon-primary d-block" href="#!">Add</a>
+                <a class="btn btn-falcon-primary d-block" data-toggle="modal" data-target="#addBrother">Add</a>
                 <hr class="border border-dashed my-4">
                 <h5 class="fs-0">Import Brothers</h5>
                 <p class="fs--1">Enter a .csv file that contains all neccessary headers to get brothers information from.</p>
-                <a class="btn btn-falcon-default d-block" href="#!">Deactivate Account</a>
+                <button class="btn btn-falcon-default d-block" data-toggle="modal" data-target="#">Import</button>
               </div>
             </div>
           </div>
@@ -38,10 +41,80 @@
                 <hr class="border border-dashed my-4">
                 <h5 class="fs-0">Reset all information</h5>
                 <p class="fs--1">Use this if it is a new semester and you want to begin fresh with all meetings, fines, paid dues, etc.. This will remove all information and reset back to dafault.</p>
-                <a class="btn btn-falcon-danger d-block" href="#!">Reset</a>
+                <a class="btn btn-falcon-default d-block" data-toggle="modal" data-target="#resetinfo">Reset</a>
               </div>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-------------------------------- modal for accepting dues ---------------------------->
+    <div class="modal fade" id="addBrother" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <form class="" action="/addbro" method="post">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">
+                Add Brother
+              </h5>
+              <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span class="font-weight-light" aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+              <div class="form-group">
+                <label for="name">Name</label>
+                <input class="form-control" name="name" type="text" placeholder="Name...">
+              </div>
+              <div class="form-group">
+                <label for="email">Email</label>
+                <input class="form-control" name="email" type="email" placeholder="Email...">
+              </div>
+              <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input class="form-control" name="phone" type="text" placeholder="XXX-XXX-XXXX">
+              </div>
+              <div class="form-group">
+                <label for="phone">Major</label>
+                <input class="form-control" name="major" type="text" placeholder="Health Science">
+              </div>
+              <div class="form-group">
+                <label for="phone">Expected Graduation</label>
+                <input class="form-control" name="graduationYear" type="text" placeholder="Summer 2022">
+              </div>
+              <div class="form-group">
+                <label for="phone">Classification</label>
+                <input class="form-control" name="classification" type="text" placeholder="Sophmore">
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-danger btn-sm" type="button" data-dismiss="modal">Cancel</button>
+              <input type="submit" class="btn btn-primary btn-sm paid" type="button" value="Add">
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-------------------------------- modal for accepting dues ---------------------------->
+    <div class="modal fade" id="resetinfo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <form class="" action="/resetinfo" method="post">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">
+                Reset Info
+              </h5>
+              <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span class="font-weight-light" aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+              <p>Are you sure you want to reset all info? This action cannot be undone.</p>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-danger btn-sm" type="button" data-dismiss="modal">Cancel</button>
+              <input type="submit" class="btn btn-primary btn-sm paid" type="button" value="Reset">
+            </div>
+          </form>
         </div>
       </div>
     </div>

@@ -15,6 +15,13 @@ exports.getTime = async function getTime(str) {
   return now;
 }
 
+exports.lessThanFTMinAgo = function lessThanFTMinAgo(date) {
+    const ftmin = 1000 * 60 * 15;
+    const anHourAgo = date - ftmin;
+
+    return date > anHourAgo;
+}
+
 exports.closeMeeting = async function closeMeeting(meetingRef, meetingAttendance) {[]
 
   try {
