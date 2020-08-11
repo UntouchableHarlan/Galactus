@@ -1,5 +1,4 @@
-// const firebase = require("firebase");
-// const db = firebase.firestore();
+
 
 exports.getTime = async function getTime(str) {
   // 12:00
@@ -22,7 +21,7 @@ exports.lessThanFTMinAgo = function lessThanFTMinAgo(date) {
     return date > anHourAgo;
 }
 
-exports.closeMeeting = async function closeMeeting(meetingRef, meetingAttendance) {[]
+exports.closeMeeting = async function closeMeeting(firebase, db, meetingRef, meetingAttendance) {[]
 
   try {
     let brosRef = db.collection('Brothers').orderBy('name', 'desc');
@@ -33,15 +32,31 @@ exports.closeMeeting = async function closeMeeting(meetingRef, meetingAttendance
     let meetingDoc = meetingSnap.data();
 
     brotherDocs.forEach((bro, i) => {
-      if (!meetingAttendance.contains(bro.data())) {
+      // console.log(`checking if ${bro.data().name} missed the meeting`);
+      if (!containsObject(bro.data(), meetingAttendance)) {
+        // console.log(`${bro.data().name} missed the meeting`);
         let broRef = db.collection('Brothers').doc(bro.id);
         broRef.update({
           absent: firebase.firestore.FieldValue.arrayUnion(meetingDoc)
         });
+        meetingRef.update({
+          absent: firebase.firestore.FieldValue.arrayUnion(bro.data())
+        });
       }
     });
   } catch (e) {
-
+    console.log(`error closing meeting: ${e}`);
   }
 
+}
+
+function containsObject(obj, list) {
+    var i;
+    for (i = 0; i < list.length; i++) {
+        if (list[i].id === obj.id) {
+            return true;
+        }
+    }
+
+    return false;
 }

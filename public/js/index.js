@@ -5,7 +5,7 @@ $( document ).ready(function() {
     $.ajax({
       type: 'POST',
       dataType: 'json',
-      url: `/${window.location.href.split("/")[3]}/startmeeting`,
+      url: `/${window.location.href.split("/")[4]}/startmeeting`,
       success: function(res) {
         console.log(res);
         let date = new Date(res.toString());
@@ -20,12 +20,12 @@ $( document ).ready(function() {
     $.ajax({
       type: 'POST',
       dataType: 'json',
-      url: `/${window.location.href.split("/")[3]}/endmeeting`,
+      url: `/${window.location.href.split("/")[4]}/endmeeting`,
       complete: function(res) {
         console.log(res);
         let date = new Date(res.toString());
         $("#end")[0].innerText = date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
-        $("#buu").html("<a href=\"/\" class=\"btn btn-primary\" style=\"display:flex;justify-content:center;\">View Details</a>");
+        $("#buu").html("<a href=\"/" + window.location.href.split("/")[4] + "/statistics\" class=\"btn btn-primary\" style=\"display:flex;justify-content:center;\">View Details</a>");
       }
     });
   });

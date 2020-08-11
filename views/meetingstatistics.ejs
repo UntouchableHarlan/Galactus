@@ -64,7 +64,17 @@
               <div class="col-md-6" style="padding-left: 3%;">
                 <label>Notes</label>
                 <br>
-                <strong><%=  %></strong>
+                <strong></strong>
+                <% if (meeting.notes) { %>
+
+                <% } else { %>
+                  <form class="" enctype="multipart/form-data" action="/notes/<%= meeting.meetingId %>" method="post">
+                    <div class="form-group">
+                      <input type="file" name="notes" value="">
+                    </div>
+                    <input class="btn btn-primary" type="submit" name="" value="Upload">
+                  </form>
+                <% } %>
               </div>
             </li>
           </ul>

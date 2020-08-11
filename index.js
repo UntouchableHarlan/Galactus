@@ -240,11 +240,10 @@ app.get('/:id/signin', async function(req, res, next) {
 app.post('/:id/startmeeting', async function(req, res, next) {
   try {
     let meetingRef = db.collection("Meetings").doc(req.params.id);
-    let now = firebase.firestore.FieldValue.serverTimestamp()
     let date = new Date();
     date.setDate(date.getDate());
     meetingRef.update({
-      startTime: now
+      startTime: firebase.firestore.FieldValue.serverTimestamp()
     });
 
     let meetingSnap = await meetingRef.get();
@@ -252,12 +251,14 @@ app.post('/:id/startmeeting', async function(req, res, next) {
 
     res.json(date);
   } catch (e) {
+    console.log(`salomon's error: ${e}`);
     res.json(e);
   }
 });
 
 app.post('/:id/endmeeting', async function(req, res, next) {
   try {
+    console.log('we got hit');
     let meetingRef = db.collection("Meetings").doc(req.params.id);
     let now = firebase.firestore.FieldValue.serverTimestamp()
     let date = new Date();
@@ -268,9 +269,10 @@ app.post('/:id/endmeeting', async function(req, res, next) {
 
     let meetingSnap = await meetingRef.get();
     let meetingDoc = meetingSnap.data();
-    await helper.closeMeeting(meetingRef, meetingDoc.attended);
-    res.redirect(`/${req.params.id}/statistics`)
+    await helper.closeMeeting(firebase, db, meetingRef, meetingDoc.attended);
+    res.json(date);
   } catch (e) {
+    console.log(e);
     res.json(e);
   }
 });
@@ -353,6 +355,23 @@ app.get('/:id/statistics', mid.isAuth, async function(req, res, next) {
     console.log();
   }
 });
+
+app.post('/notes/:id', mid.isAuth, async function(req, res, next) {
+  try {
+    var meetingRef = db.collection("Meetings").doc(req.params.id);
+    let notes = req.files.notes;
+    await meetingRef.update({
+      notes: {
+        name: notes.name,
+        mimetype: notes.mimetype,
+        size: notes.size
+      }
+    })
+  } catch (e) {
+    console.log(e);
+    res.redirect(`/${req.params.id}/statistics`)
+  }
+})
 
 app.listen(process.env.PORT || 3000, function() {
     console.log("legs goo");
