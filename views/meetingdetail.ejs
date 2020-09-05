@@ -10,6 +10,14 @@
         <div class="col-md-6" style="display:flex;justify-content:center;" id="picture">
           <img src="<%= url %>" style="width:100%;">
         </div>
+        <div class="col-md-6" style="text-align:center">
+          <h2>Signed In</h2>
+          <ul class="list-group list-group-flush" id="signedInBro" style="overflow:scroll;-webkit-overflow-scrolling:touch;max-height:300px;">
+            <% for (var i = meeting.attended.length - 1; i >= 0; i--) { %>
+              <li class="list-group-item"><%= meeting.attended[i].name %></li>
+            <% } %>
+          </ul>
+        </div>
       </div>
       <br>
       <div class="col-md-12" style="display:flex;justify-content: center;">
@@ -56,6 +64,8 @@
       <% } %>
     </div>
     <br>
+    <script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-firestore.js"></script>
     <script src="../js/jquery.min.js"></script>
     <script src="../js/popper.min.js"></script>
     <script src="../js/bootstrap.min.js"></script>
@@ -64,6 +74,7 @@
     <script src="../lib/sticky-kit/sticky-kit.min.js"></script>
     <script src="../lib/is_js/is.min.js"></script>
     <script src="../js/theme.js"></script>
+    <script src="../js/fire.js"></script>
     <script src="../js/index.js"></script>
   </body>
 </html>

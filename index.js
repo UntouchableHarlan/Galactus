@@ -59,6 +59,48 @@ app.get('/', mid.isAuth, function(req, res, next) {
   res.render("index");
 });
 
+app.get('/bidvote', mid.isAuth, function(req, res, next) {
+  res.render("bidvote");
+});
+
+app.get('/bidvote/:id', mid.isAuth, async function(req, res, next) {
+  try {
+    let voteId = req.params.id
+    let voteRef = db.collection("BidVote").doc(voteId);
+    let voteQuery = await voteRef.get();
+    let voteDoc = voteQuery.data();
+
+    // create qr code to put on the page
+
+    res.render("bidvotedetail", {
+      vote: voteDoc
+    });
+  } catch (e) {
+    console.log(e);
+  }
+});
+
+app.post('/newbidvote', mid.isAuth, function(req, res, next) {
+  let password = req.body.password
+  console.log(password);
+  if (password != "squirtleKnight") {
+    res.json({
+      error: "Wrong admin password, please try again"
+    });
+  } else {
+    let voteRef = db.collection("BidVote").doc();
+    let data = {
+      id: voteRef.id,
+      dateCreated: firebase.firestore.FieldValue.serverTimestamp(),
+      voted: []
+    }
+    voteRef.set(data);
+    res.json({
+      id: voteRef.id
+    });
+  }
+});
+
 // ==============================================================
 //                        Settings
 // ==============================================================
@@ -287,27 +329,39 @@ app.post('/:id/signin', async function(req, res, next) {
     let meetingSnap = await meetingRef.get();
     let broDoc = docSnapshot.data();
     let meetingDoc = meetingSnap.data();
+
+    // check if person already signed into meeting
+    meetingDoc.attended.forEach((bro, i) => {
+      if (bro.id == broId) {
+        res.json({
+          message: "It looks like you're signed in already",
+          status: 400
+        });
+      }
+    });
+
+
     if (meetingDoc.startTime != null) {
-      // meeting has begun, anyone 15 minutes late is considered late
+      // meeting has begun, anyone who signs in after is late
       var now = new Date();
       var ftmin = 15 * 60 * 1000;
       now.setDate(now.getDate());
 
       //
       console.log(helper.lessThanFTMinAgo(meetingDoc.startTime.toDate()));
-      if (helper.lessThanFTMinAgo(meetingDoc.startTime.toDate())) {
-        let lateDoc = {
-          brother: broDoc,
-          timeSignedIn: firebase.firestore.FieldValue.serverTimestamp()
-        }
-        console.log(lateDoc);
-        meetingRef.update({
-          late: firebase.firestore.FieldValue.arrayUnion(broDoc)
-        });
-        broRef.update({
-          tardy: firebase.firestore.FieldValue.arrayUnion(meetingDoc)
-        });
+
+      let lateDoc = {
+        brother: broDoc,
+        timeSignedIn: firebase.firestore.FieldValue.serverTimestamp()
       }
+      console.log(lateDoc);
+      meetingRef.update({
+        late: firebase.firestore.FieldValue.arrayUnion(broDoc)
+      });
+      broRef.update({
+        tardy: firebase.firestore.FieldValue.arrayUnion(meetingDoc)
+      });
+
     }
     meetingRef.update({
       attended: firebase.firestore.FieldValue.arrayUnion(broDoc)
