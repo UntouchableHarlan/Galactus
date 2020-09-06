@@ -63,6 +63,10 @@ app.get('/bidvote', mid.isAuth, function(req, res, next) {
   res.render("bidvote");
 });
 
+app.get('/bidvote/all', mid.isAuth, function(req, res, next) {
+  res.render("allbidvote");
+});
+
 app.get('/bidvote/:id', mid.isAuth, async function(req, res, next) {
   try {
     let voteId = req.params.id
@@ -340,6 +344,13 @@ app.post('/:id/signin', async function(req, res, next) {
       }
     });
 
+    if (meetingDoc.endTime != null) {
+      res.json({
+        message: "This meeting has ended :(",
+        status: 400
+      });
+    }
+
 
     if (meetingDoc.startTime != null) {
       // meeting has begun, anyone who signs in after is late
@@ -352,14 +363,17 @@ app.post('/:id/signin', async function(req, res, next) {
 
       let lateDoc = {
         brother: broDoc,
-        timeSignedIn: firebase.firestore.FieldValue.serverTimestamp()
+        timeSignedIn: firebase.firestore.Timestamp.now()
       }
       console.log(lateDoc);
       meetingRef.update({
-        late: firebase.firestore.FieldValue.arrayUnion(broDoc)
+        late: firebase.firestore.FieldValue.arrayUnion(lateDoc)
       });
       broRef.update({
-        tardy: firebase.firestore.FieldValue.arrayUnion(meetingDoc)
+        tardy: firebase.firestore.FieldValue.arrayUnion({
+          meeting: meetingDoc,
+          timeSignedIn: firebase.firestore.Timestamp.now()
+        })
       });
 
     }

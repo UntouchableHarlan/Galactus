@@ -37,7 +37,7 @@ exports.closeMeeting = async function closeMeeting(firebase, db, meetingRef, mee
         // console.log(`${bro.data().name} missed the meeting`);
         let broRef = db.collection('Brothers').doc(bro.id);
         broRef.update({
-          absent: firebase.firestore.FieldValue.arrayUnion(meetingDoc.id)
+          absent: firebase.firestore.FieldValue.arrayUnion(meetingDoc)
         });
         meetingRef.update({
           absent: firebase.firestore.FieldValue.arrayUnion(bro.data())
