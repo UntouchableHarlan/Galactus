@@ -335,14 +335,16 @@ app.post('/:id/signin', async function(req, res, next) {
     let meetingDoc = meetingSnap.data();
 
     // check if person already signed into meeting
-    meetingDoc.attended.forEach((bro, i) => {
-      if (bro.id == broId) {
-        res.json({
-          message: "It looks like you're signed in already",
-          status: 400
-        });
-      }
-    });
+    if (meetingDoc.attended != null) {
+      meetingDoc.attended.forEach((bro, i) => {
+        if (bro.id == broId) {
+          res.json({
+            message: "It looks like you're signed in already",
+            status: 400
+          });
+        }
+      });
+    }
 
     if (meetingDoc.endTime != null) {
       res.json({
