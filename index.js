@@ -105,6 +105,13 @@ app.post('/newbidvote', mid.isAuth, function(req, res, next) {
   }
 });
 
+app.post('/addcandidate', mid.isAuth, async function(req, res, next) {
+  console.log(req);
+  res.json({
+    request: req
+  })
+})
+
 // ==============================================================
 //                        Settings
 // ==============================================================
@@ -250,13 +257,14 @@ app.post('/newmeeting', mid.isAuth, async function(req, res, next) {
     type: req.body.type,
     time: startTime,
     dateCreated: firebase.firestore.FieldValue.serverTimestamp(),
-    password: req.body.password
+    password: req.body.password,
+    attended: []
   }
   console.log(data);
   data.meetingId = docRef.id
   docRef.set(data);
 
-  res.redirect(`/${docRef.id}`)
+  res.redirect(`meetings/${docRef.id}`)
 });
 
 app.get('/:id/signin', async function(req, res, next) {

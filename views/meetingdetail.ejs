@@ -13,7 +13,7 @@
         <div class="col-md-6" style="text-align:center">
           <h2>Signed In</h2>
           <ul class="list-group list-group-flush" id="signedInBro" style="overflow:scroll;-webkit-overflow-scrolling:touch;max-height:300px;">
-            <% if (meeting.attended != null) { %>
+            <% if (meeting.attended.length != 0) { %>
               <% for (var i = meeting.attended.length - 1; i >= 0; i--) { %>
                 <li class="list-group-item"><%= meeting.attended[i].name %></li>
               <% } %>
@@ -68,9 +68,9 @@
       <% } %>
     </div>
     <br>
+    <script src="../js/jquery.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-firestore.js"></script>
-    <script src="../js/jquery.min.js"></script>
     <script src="../js/popper.min.js"></script>
     <script src="../js/bootstrap.min.js"></script>
     <script src="../js/plugins.min.js"></script>

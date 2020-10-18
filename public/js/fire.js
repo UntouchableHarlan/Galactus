@@ -8,13 +8,13 @@ $(document).ready(function() {
 
   var db = firebase.firestore();
   let meetingId = window.location.pathname.split("/")[2]
+  console.log("meetingId: " + meetingId);
 
   db.collection("Meetings").doc(meetingId).onSnapshot(function(doc) {
     var source = doc.metadata.hasPendingWrites ? "Local" : "Server";
 
     // get the last attended
     let data = doc.data();
-    let lastBro = data.attended[data.attended.length - 1];
     // console.log("Last bro to sign in: ", lastBro.name);
     $("#signedInBro").empty();
 
